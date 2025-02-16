@@ -35,14 +35,6 @@ type PointsResponse struct {
 
 var receipts = make(map[string]Receipt)
 
-func generateUuid() string {
-	newUuid := uuid.New().String()
-	for _, exists := receipts[newUuid]; exists; _, exists = receipts[newUuid] {
-		newUuid = uuid.New().String()
-	}
-	return newUuid
-}
-
 func isAlphanumeric(char byte, alphabet []byte, numbers []byte) bool {
 	for _, letter := range alphabet {
 		if char == letter {
@@ -77,7 +69,7 @@ func processReceiptHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	receiptId := generateUuid()
+	receiptId := uuid.New().String()
 	receipts[receiptId] = receipt
 
 	resp := ReceiptResponse{ID: receiptId}
